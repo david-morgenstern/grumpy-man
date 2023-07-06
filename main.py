@@ -4,7 +4,6 @@ from datetime import date
 
 
 import os
-st.set_option("server.enableCORS", True)
 st.title("GrumPT Bot - the uncle you never had and never wanted")
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
