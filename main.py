@@ -2,14 +2,23 @@ import openai
 import streamlit as st
 from datetime import date
 
-
 import os
+
 st.title("GrumPT Bot - the uncle you never had and never wanted")
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
-grumpa = st.secrets["GRUMPA"]
+
+bot_options = {
+    "Jason": st.secrets["JASON"],
+    "Wisdomosaurus": st.secrets["GRUMPA"]
+}
 
 username = st.text_input("Enter your username")
+bot_name = st.selectbox("Select Bot", list(bot_options.keys()))
+
+if "selected_bot" not in st.session_state or st.session_state.selected_bot != bot_name:
+    st.session_state.clear()
+    st.session_state.selected_bot = bot_name
 
 if username:
     st.session_state['log_file'] = f"./logs/{str(username)}_{date.today().strftime('%Y_%m_%d')}.txt"
@@ -23,7 +32,7 @@ if username:
     if "messages" not in st.session_state:
         st.session_state.messages = []
         st.session_state.messages.append(
-            {"role": "system", "content": grumpa + f"\nYou are entering a conversation with:{username}\n\n"})
+            {"role": "system", "content": bot_options[bot_name] + f"\nYou are entering a conversation with:{username}\n\n"})
 
     for message in st.session_state.messages:
         if message["role"] != "system":
