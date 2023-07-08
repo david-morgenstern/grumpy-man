@@ -9,6 +9,7 @@ st.title("GrumPT Bot - the uncle you never had and never wanted")
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 bot_options = {
+    "Neo": st.secrets["NEO"],
     "Jason": st.secrets["JASON"],
     "Wisdomosaurus": st.secrets["GRUMPA"]
 }
