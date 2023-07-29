@@ -9,6 +9,7 @@ st.title("GrumPT Bot - the uncle you never had and never wanted")
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 bot_options = {
+    "Friedrich": st.secrets["Friedrich"],
     "Neo": st.secrets["NEO"],
     "Jason": st.secrets["JASON"],
     "Wisdomosaurus": st.secrets["GRUMPA"]
@@ -22,11 +23,6 @@ if "selected_bot" not in st.session_state or st.session_state.selected_bot != bo
     st.session_state.selected_bot = bot_name
 
 if username:
-    st.session_state['log_file'] = f"./logs/{str(username)}_{date.today().strftime('%Y_%m_%d')}.txt"
-    if not os.path.exists(st.session_state['log_file']):
-        with open(st.session_state['log_file'], 'w') as file:
-            file.write("")
-
     if "openai_model" not in st.session_state:
         st.session_state["openai_model"] = "gpt-3.5-turbo-16k-0613"
 
@@ -44,9 +40,7 @@ if username:
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.markdown(prompt)
-            with open(st.session_state['log_file'], 'a') as file:
-                file.write(f"{username}: {prompt}")
-                file.write("\n\n")
+
         with st.chat_message("assistant"):
             message_placeholder = st.empty()
             full_response = ""
@@ -60,10 +54,6 @@ if username:
             ):
                 full_response += response.choices[0].delta.get("content", "")
                 message_placeholder.markdown(full_response + "▌")
-            with open(st.session_state['log_file'], 'a') as file:
-                file.write(f"Wisdomosaurus: {full_response}")
-                file.write("\n\n")
-            print(full_response)
 
             message_placeholder.markdown(full_response)
         st.session_state.messages.append({"role": "assistant", "content": full_response})
