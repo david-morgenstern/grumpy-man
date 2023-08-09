@@ -28,7 +28,7 @@ if "selected_bot" not in st.session_state or st.session_state.selected_bot != bo
 
 if username:
     if "openai_model" not in st.session_state:
-        st.session_state["openai_model"] = model
+        st.session_state["openai_model"] = models[model]
 
     if "messages" not in st.session_state:
         st.session_state.messages = []
