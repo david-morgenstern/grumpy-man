@@ -1,22 +1,26 @@
 import openai
 import streamlit as st
-from datetime import date
-
-import os
 
 st.title("GrumPT Bot - the uncle you never had and never wanted")
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 bot_options = {
-    "Friedrich": st.secrets["Friedrich"],
     "Neo": st.secrets["NEO"],
+    "Friedrich": st.secrets["Friedrich"],
     "Jason": st.secrets["JASON"],
     "Wisdomosaurus": st.secrets["GRUMPA"]
 }
 
+models = {
+    "gpt4": st.secrets['gpt4'],
+    "gpt3-turbo": st.secrets['gpt3']
+}
+
 username = st.text_input("Enter your username")
-bot_name = st.selectbox("Select Bot", list(bot_options.keys()))
+
+model = st.selectbox("Models", list(models.keys()))
+bot_name = st.selectbox("Bots", list(bot_options.keys()))
 
 if "selected_bot" not in st.session_state or st.session_state.selected_bot != bot_name:
     st.session_state.clear()
@@ -24,7 +28,7 @@ if "selected_bot" not in st.session_state or st.session_state.selected_bot != bo
 
 if username:
     if "openai_model" not in st.session_state:
-        st.session_state["openai_model"] = "gpt-3.5-turbo-16k-0613"
+        st.session_state["openai_model"] = model
 
     if "messages" not in st.session_state:
         st.session_state.messages = []
